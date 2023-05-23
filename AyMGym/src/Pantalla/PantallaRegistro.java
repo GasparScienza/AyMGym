@@ -18,6 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class PantallaRegistro {
 
@@ -164,6 +166,16 @@ public class PantallaRegistro {
 		
 		
 		txtFechaNac = new JTextField();
+		txtFechaNac.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				String fecha = txtFechaNac.getText();
+			    if (fecha.length() == 8) {
+			        String formattedFecha = fecha.substring(0, 4) + "-" + fecha.substring(4, 6) + "-" + fecha.substring(6,8);
+			        txtFechaNac.setText(formattedFecha);
+			    }
+			}
+		});
 		txtFechaNac.setBounds(366, 77, 114, 19);
 		frmAlumnos.getContentPane().add(txtFechaNac);
 		txtFechaNac.setColumns(10);
