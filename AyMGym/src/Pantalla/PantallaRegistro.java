@@ -37,6 +37,7 @@ public class PantallaRegistro {
 	ArrayList<Alumnos> Lista;
 	DefaultTableModel modeloTabla = new DefaultTableModel();
 	private JTextField txtObservacion;
+	private JTextField txtFechaIngr;
 	
 
 	public static void main(String[] args) {
@@ -70,6 +71,25 @@ public class PantallaRegistro {
 		    txtObservacion.setBounds(185, 116, 505, 54);
 		    frmAlumnos.getContentPane().add(txtObservacion);
 		    txtObservacion.setColumns(10);
+		    
+		    JLabel lblFechaIngr = new JLabel("*Fecha de Ingreso:");
+		    lblFechaIngr.setBounds(400, 67, 137, 36);
+		    frmAlumnos.getContentPane().add(lblFechaIngr);
+		    
+		    txtFechaIngr = new JTextField();
+		    txtFechaIngr.addFocusListener(new FocusAdapter() {
+		    	@Override
+		    	public void focusLost(FocusEvent e) {
+		    		String fechaingr = txtFechaIngr.getText();
+				    if (fechaingr.length() == 8) {
+				        String formattedFecha = fechaingr.substring(0, 4) + "-" + fechaingr.substring(4, 6) + "-" + fechaingr.substring(6,8);
+				        txtFechaIngr.setText(formattedFecha);
+				    }
+		    	}
+		    });
+		    txtFechaIngr.setColumns(10);
+		    txtFechaIngr.setBounds(542, 76, 114, 19);
+		    frmAlumnos.getContentPane().add(txtFechaIngr);
 		 
 	}
 	 
@@ -80,6 +100,7 @@ public class PantallaRegistro {
 		txtApellido.setText("");
 		txtFechaNac.setText("");
 		txtObservacion.setText("");
+		txtFechaIngr.setText("");
 	}
 
 	public void actTabla() {
@@ -95,6 +116,7 @@ public class PantallaRegistro {
 	    	alumno[1] = a.getApellidoA();
 	    	alumno[2] = a.getFecha();
 	    	alumno[3] = a.getObservacion();
+	    	alumno[4] = a.getFechaIgr();
 	    	modeloTabla.addRow(alumno);
 	    }
 	    tblListaAlumnos.setModel(modeloTabla);
@@ -114,12 +136,12 @@ public class PantallaRegistro {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if(txtNombre.getText().equals("")||txtApellido.getText().equals("")||txtFechaNac.getText().equals("")) {
+					if(txtNombre.getText().equals("")||txtApellido.getText().equals("")||txtFechaNac.getText().equals("")||txtFechaIngr.getText().equals("")) {
 						JOptionPane.showMessageDialog(null, "Campos vacios");
 						return;
 					}
 					Alumnos objAl = new Alumnos();
-					objAl.insertarAlumnos(txtNombre, txtApellido, txtFechaNac, txtObservacion);
+					objAl.insertarAlumnos(txtNombre, txtApellido, txtFechaNac, txtObservacion, txtFechaIngr);
 					actTabla();
 					limpiarTabla();
 				} catch (ParseException e1) {
@@ -134,7 +156,7 @@ public class PantallaRegistro {
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Alumnos alu = new Alumnos();
-					alu.modificarAlumnos(txtId, txtNombre, txtApellido, txtFechaNac, txtObservacion);
+					alu.modificarAlumnos(txtId, txtNombre, txtApellido, txtFechaNac, txtObservacion, txtFechaIngr);
 					actTabla();
 			}
 		});
@@ -150,6 +172,7 @@ public class PantallaRegistro {
 				}catch(Exception ex){
 					ex.toString();
 				}
+				limpiarTabla();
 			}
 		});
 		btnEliminar.setBounds(400, 182, 117, 25);
@@ -176,7 +199,7 @@ public class PantallaRegistro {
 			    }
 			}
 		});
-		txtFechaNac.setBounds(366, 77, 114, 19);
+		txtFechaNac.setBounds(252, 76, 114, 19);
 		frmAlumnos.getContentPane().add(txtFechaNac);
 		txtFechaNac.setColumns(10);
 		
@@ -203,7 +226,7 @@ public class PantallaRegistro {
 		frmAlumnos.getContentPane().add(lblApellido);
 		
 		JLabel lblFecha = new JLabel("*Fecha Nacimiento:");
-		lblFecha.setBounds(224, 68, 137, 36);
+		lblFecha.setBounds(110, 67, 137, 36);
 		frmAlumnos.getContentPane().add(lblFecha);
 		//Se crea las columnas de la tabla
 
@@ -212,6 +235,7 @@ public class PantallaRegistro {
 	    modeloTabla.addColumn("Apellido");
 	    modeloTabla.addColumn("Fecha de nacimiento");
 	    modeloTabla.addColumn("Observacion");
+	    modeloTabla.addColumn("Fecha de Ingreso");
 	    
 	    JTable tabla = new JTable(modeloTabla);
 	    tabla.addMouseListener(new MouseAdapter() {
@@ -224,6 +248,8 @@ public class PantallaRegistro {
 	    		txtApellido.setText(Al.getApellidoA());
 	    		txtFechaNac.setText(Al.getFecha().toString());
 	    		txtObservacion.setText(Al.getObservacion());
+	    		txtFechaIngr.setText(Al.getFechaIgr().toString());
+
 	    	}
 	    });
 	    tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

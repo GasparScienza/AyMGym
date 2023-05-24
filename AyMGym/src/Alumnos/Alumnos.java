@@ -20,9 +20,16 @@ public class Alumnos {
 	String apellidoA;
 	Date fecha;
 	String observacion;
+	Date fechaIgr;
 	
 	
 	
+	public Date getFechaIgr() {
+		return fechaIgr;
+	}
+	public void setFechaIgr(Date fechaIgr) {
+		this.fechaIgr = fechaIgr;
+	}
 	public String getObservacion() {
 		return observacion;
 	}
@@ -54,22 +61,26 @@ public class Alumnos {
 		this.fecha = fecha;
 	}
 
-	public void insertarAlumnos(JTextField paramNombres, JTextField paramApellidos, JTextField paramFechaNac, JTextField paramObservacion) throws ParseException{          
+	public void insertarAlumnos(JTextField paramNombres, JTextField paramApellidos, JTextField paramFechaNac, JTextField paramObservacion, JTextField paramFechaIngr) throws ParseException{          
 	        setNombreA(paramNombres.getText()); 
 	        setApellidoA(paramApellidos.getText()); 	        
 	        String fechaStr = paramFechaNac.getText(); 
 	        LocalDate fecha = LocalDate.parse(fechaStr); 
 	        java.sql.Date sqlDate = java.sql.Date.valueOf(fecha); 	
-	        setObservacion(paramObservacion.getText()); 	        
+	        setObservacion(paramObservacion.getText()); 	
+	        String fechaIn = paramFechaIngr.getText(); 
+	        LocalDate fechai = LocalDate.parse(fechaIn); 
+	        java.sql.Date sqlDate1 = java.sql.Date.valueOf(fechai);
 
 	        Conexion objConexion = new Conexion(); 	         
-	        String consulta = "INSERT INTO alumnos VALUES (default,?,?,?,?);"; 	       
+	        String consulta = "INSERT INTO alumnos VALUES (default,?,?,?,?,?);"; 	       
 	        try {  
 	            CallableStatement cs = objConexion.obtConexion().prepareCall(consulta); 	             
 	            cs.setString(1, getNombreA()); 
 	            cs.setString(2, getApellidoA()); 
 	            cs.setDate(3, sqlDate); 
 	            cs.setString(4, getObservacion()); 
+	            cs.setDate(5, sqlDate1); 
 
 	            cs.execute(); 
 	            JOptionPane.showMessageDialog(null, "Se inserto correctamente");        
@@ -79,7 +90,7 @@ public class Alumnos {
 	        } 
 	        objConexion.desconectar();
 	    }
-	public void modificarAlumnos(JTextField paramId, JTextField paramNombres, JTextField paramApellidos, JTextField paramFechaNac, JTextField paramObservacion) {
+	public void modificarAlumnos(JTextField paramId, JTextField paramNombres, JTextField paramApellidos, JTextField paramFechaNac, JTextField paramObservacion, JTextField paramFechaIngr) {
 	    try {
 	        setId(Integer.parseInt(paramId.getText().trim()));
 	        setNombreA(paramNombres.getText());
@@ -87,21 +98,24 @@ public class Alumnos {
 
 	        String fechaStr = paramFechaNac.getText();
 	        LocalDate fecha = LocalDate.parse(fechaStr.trim());
-
 	        java.sql.Date sqlDate = java.sql.Date.valueOf(fecha);
 
 	        setObservacion(paramObservacion.getText());
-
+	        
+	        String fechaIn = paramFechaIngr.getText();
+	        LocalDate fechai = LocalDate.parse(fechaIn.trim());
+	        java.sql.Date sqlDate1 = java.sql.Date.valueOf(fechai);
 	        
 	        Conexion objConexion = new Conexion();
-	        String consulta = "UPDATE alumnos SET nombre=?, apellido=?, fecha_nac=?, observacion=? WHERE id=?;";
+	        String consulta = "UPDATE alumnos SET nombre=?, apellido=?, fecha_nac=?, observacion=?, fecha_ingr=? WHERE id=?;";
 
 	        try (PreparedStatement ps = objConexion.obtConexion().prepareStatement(consulta)) {
 	            ps.setString(1, getNombreA());
 	            ps.setString(2, getApellidoA());
 	            ps.setDate(3, sqlDate);
 	            ps.setString(4, getObservacion());
-	            ps.setInt(5, getId());
+	            ps.setDate(5, sqlDate1);
+	            ps.setInt(6, getId());
 	            ps.executeUpdate();
 	            JOptionPane.showMessageDialog(null, "Se modificó correctamente");
 	        } catch (SQLException ex) {
@@ -145,6 +159,7 @@ public class Alumnos {
 				Al.setApellidoA(rs.getString("apellido"));
 				Al.setFecha(rs.getDate("fecha_nac"));
 				Al.setObservacion(rs.getString("observacion"));
+				Al.setFechaIgr(rs.getDate("fecha_ingr"));
 				lista.add(Al);
 			}
 			objConexion.desconectar();
