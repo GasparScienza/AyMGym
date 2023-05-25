@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import Conexion.Conexion;
@@ -61,7 +62,7 @@ public class Alumnos {
 		this.fecha = fecha;
 	}
 
-	public void insertarAlumnos(JTextField paramNombres, JTextField paramApellidos, JTextField paramFechaNac, JTextField paramObservacion, JTextField paramFechaIngr) throws ParseException{          
+	public void insertarAlumnos(JTextField paramNombres, JTextField paramApellidos, JTextField paramFechaNac, JTextArea paramObservacion, JTextField paramFechaIngr) throws ParseException{          
 	        setNombreA(paramNombres.getText()); 
 	        setApellidoA(paramApellidos.getText()); 	        
 	        String fechaStr = paramFechaNac.getText(); 
@@ -90,7 +91,7 @@ public class Alumnos {
 	        } 
 	        objConexion.desconectar();
 	    }
-	public void modificarAlumnos(JTextField paramId, JTextField paramNombres, JTextField paramApellidos, JTextField paramFechaNac, JTextField paramObservacion, JTextField paramFechaIngr) {
+	public void modificarAlumnos(JTextField paramId, JTextField paramNombres, JTextField paramApellidos, JTextField paramFechaNac, JTextArea paramObservacion, JTextField paramFechaIngr) {
 	    try {
 	        setId(Integer.parseInt(paramId.getText().trim()));
 	        setNombreA(paramNombres.getText());

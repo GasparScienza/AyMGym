@@ -20,6 +20,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
+import java.awt.Dimension;
+import java.awt.Insets;
+import javax.swing.JTextArea;
+import javax.swing.JScrollBar;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import javax.swing.DropMode;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.SystemColor;
+import javax.swing.border.CompoundBorder;
 
 public class PantallaRegistro {
 
@@ -29,6 +44,7 @@ public class PantallaRegistro {
 	private JTextField txtApellido;
 	private JTable tblListaAlumnos;
 	private JTextField txtNombre;
+	private JTextArea txtObservacion;
 	
 	int fila = -1;
 
@@ -36,7 +52,6 @@ public class PantallaRegistro {
 	Alumnos Al = new Alumnos();
 	ArrayList<Alumnos> Lista;
 	DefaultTableModel modeloTabla = new DefaultTableModel();
-	private JTextField txtObservacion;
 	private JTextField txtFechaIngr;
 	
 
@@ -59,24 +74,24 @@ public class PantallaRegistro {
 		   txtId.setEnabled(false);
 		    
 		    txtNombre = new JTextField();
+		    txtNombre.setBounds(338, 116, 114, 19);
 		    txtNombre.setColumns(10);
-		    txtNombre.setBounds(331, 39, 114, 19);
 		    frmAlumnos.getContentPane().add(txtNombre);	 
 		    
 		    JLabel lblObservacion = new JLabel("Observacion:");
-		    lblObservacion.setBounds(76, 118, 104, 15);
+		    lblObservacion.setBounds(10, 286, 147, 90);
+		    lblObservacion.setHorizontalAlignment(SwingConstants.RIGHT);
+		    lblObservacion.setFont(new Font("Arial", Font.PLAIN, 17));
 		    frmAlumnos.getContentPane().add(lblObservacion);
 		    
-		    txtObservacion = new JTextField();
-		    txtObservacion.setBounds(185, 116, 505, 54);
-		    frmAlumnos.getContentPane().add(txtObservacion);
-		    txtObservacion.setColumns(10);
-		    
 		    JLabel lblFechaIngr = new JLabel("*Fecha de Ingreso:");
-		    lblFechaIngr.setBounds(400, 67, 137, 36);
+		    lblFechaIngr.setBounds(181, 201, 147, 19);
+		    lblFechaIngr.setHorizontalAlignment(SwingConstants.RIGHT);
+		    lblFechaIngr.setFont(new Font("Arial", Font.PLAIN, 17));
 		    frmAlumnos.getContentPane().add(lblFechaIngr);
 		    
 		    txtFechaIngr = new JTextField();
+		    txtFechaIngr.setBounds(338, 202, 114, 19);
 		    txtFechaIngr.addFocusListener(new FocusAdapter() {
 		    	@Override
 		    	public void focusLost(FocusEvent e) {
@@ -88,9 +103,23 @@ public class PantallaRegistro {
 		    	}
 		    });
 		    txtFechaIngr.setColumns(10);
-		    txtFechaIngr.setBounds(542, 76, 114, 19);
 		    frmAlumnos.getContentPane().add(txtFechaIngr);
-		 
+		    
+		    JLabel lblRegistrodeALumnos = new JLabel("Registro de alumnos");
+		    lblRegistrodeALumnos.setBounds(0, 11, 794, 53);
+		    lblRegistrodeALumnos.setHorizontalAlignment(SwingConstants.CENTER);
+		    lblRegistrodeALumnos.setFont(new Font("Arial", Font.PLAIN, 24));
+		    frmAlumnos.getContentPane().add(lblRegistrodeALumnos);
+		    
+		    JScrollPane scrollPane = new JScrollPane();
+		    scrollPane.setBounds(167, 286, 479, 90);
+		    frmAlumnos.getContentPane().add(scrollPane);
+		    
+		    txtObservacion = new JTextArea();
+		    scrollPane.setViewportView(txtObservacion);
+		    txtObservacion.setLineWrap(true);
+		    txtObservacion.setFont(new Font("Arial", Font.PLAIN, 17));
+		    
 	}
 	 
 
@@ -101,6 +130,8 @@ public class PantallaRegistro {
 		txtFechaNac.setText("");
 		txtObservacion.setText("");
 		txtFechaIngr.setText("");
+	    txtObservacion.setText("");
+
 	}
 
 	public void actTabla() {
@@ -126,13 +157,13 @@ public class PantallaRegistro {
 	private void initialize() {
 		frmAlumnos = new JFrame();
 		frmAlumnos.setTitle("ALUMNOS");
-		frmAlumnos.setBounds(100, 100, 810, 508);
+		frmAlumnos.setBounds(100, 100, 791, 680);
 		frmAlumnos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmAlumnos.getContentPane().setLayout(null);
 		
 		
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setBounds(476, 94, 117, 25);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -149,10 +180,11 @@ public class PantallaRegistro {
 				}
 			}
 		});
-		btnAgregar.setBounds(142, 182, 117, 25);
+		frmAlumnos.getContentPane().setLayout(null);
 		frmAlumnos.getContentPane().add(btnAgregar);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setBounds(476, 126, 117, 25);
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Alumnos alu = new Alumnos();
@@ -160,10 +192,10 @@ public class PantallaRegistro {
 					actTabla();
 			}
 		});
-		btnModificar.setBounds(271, 182, 117, 25);
 		frmAlumnos.getContentPane().add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBounds(476, 158, 117, 25);
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -175,20 +207,23 @@ public class PantallaRegistro {
 				limpiarTabla();
 			}
 		});
-		btnEliminar.setBounds(400, 182, 117, 25);
 		frmAlumnos.getContentPane().add(btnEliminar);
 		
-		JButton btnLimpiar = new JButton("Limpiar");
+		JButton btnLimpiar = new JButton("");
+		btnLimpiar.setBounds(476, 190, 117, 50);
+		btnLimpiar.setMargin(new Insets(0, 0, 0, 0));
+		btnLimpiar.setIcon(new ImageIcon("C:\\Users\\Gasparcitoh\\Desktop\\Nueva carpeta\\Icono de limpieza.png"));
+		
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				limpiarTabla();
 			}
 		});
-		btnLimpiar.setBounds(529, 182, 117, 25);
 		frmAlumnos.getContentPane().add(btnLimpiar);
 		
 		
 		txtFechaNac = new JTextField();
+		txtFechaNac.setBounds(338, 244, 114, 19);
 		txtFechaNac.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -199,34 +234,41 @@ public class PantallaRegistro {
 			    }
 			}
 		});
-		txtFechaNac.setBounds(252, 76, 114, 19);
 		frmAlumnos.getContentPane().add(txtFechaNac);
 		txtFechaNac.setColumns(10);
 		
 		JLabel lblNombre = new JLabel("*Nombre:");
-		lblNombre.setBounds(262, 41, 70, 15);
+		lblNombre.setBounds(181, 117, 147, 15);
+		lblNombre.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNombre.setFont(new Font("Arial", Font.PLAIN, 17));
 		frmAlumnos.getContentPane().add(lblNombre);
 		
 		txtId = new JTextField();
+		txtId.setBounds(338, 76, 114, 19);
 		txtId.setColumns(10);
-		txtId.setBounds(100, 39, 114, 19);
 		frmAlumnos.getContentPane().add(txtId);
 		
 		JLabel lblId = new JLabel("Id:");
-		lblId.setBounds(76, 41, 70, 15);
+		lblId.setBounds(181, 75, 147, 19);
+		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblId.setFont(new Font("Arial", Font.PLAIN, 17));
 		frmAlumnos.getContentPane().add(lblId);
 		
 		txtApellido = new JTextField();
+		txtApellido.setBounds(338, 158, 114, 19);
 		txtApellido.setColumns(10);
-		txtApellido.setBounds(576, 39, 114, 19);
 		frmAlumnos.getContentPane().add(txtApellido);
 		
 		JLabel lblApellido = new JLabel("*Apellido:");
-		lblApellido.setBounds(507, 41, 70, 15);
+		lblApellido.setBounds(181, 159, 147, 15);
+		lblApellido.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblApellido.setFont(new Font("Arial", Font.PLAIN, 17));
 		frmAlumnos.getContentPane().add(lblApellido);
 		
 		JLabel lblFecha = new JLabel("*Fecha Nacimiento:");
-		lblFecha.setBounds(110, 67, 137, 36);
+		lblFecha.setBounds(181, 243, 147, 19);
+		lblFecha.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblFecha.setFont(new Font("Arial", Font.PLAIN, 17));
 		frmAlumnos.getContentPane().add(lblFecha);
 		//Se crea las columnas de la tabla
 
@@ -238,6 +280,7 @@ public class PantallaRegistro {
 	    modeloTabla.addColumn("Fecha de Ingreso");
 	    
 	    JTable tabla = new JTable(modeloTabla);
+	    tabla.setFont(new Font("Arial", Font.PLAIN, 15));
 	    tabla.addMouseListener(new MouseAdapter() {
 	    	@Override
 	    	public void mouseClicked(MouseEvent e) {
@@ -257,7 +300,7 @@ public class PantallaRegistro {
 	    tblListaAlumnos = new JTable();
 
 	    JScrollPane scrollPane = new JScrollPane(tabla);
-	    scrollPane.setBounds(36, 219, 735, 249);
+	    scrollPane.setBounds(20, 387, 735, 229);
 	    frmAlumnos.getContentPane().add(scrollPane);
 	    //...
 	    
