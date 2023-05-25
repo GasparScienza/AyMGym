@@ -35,6 +35,11 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.SystemColor;
 import javax.swing.border.CompoundBorder;
+import javax.swing.table.TableRowSorter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.RowFilter;
+
 
 public class PantallaRegistro {
 
@@ -45,6 +50,9 @@ public class PantallaRegistro {
 	private JTable tblListaAlumnos;
 	private JTextField txtNombre;
 	private JTextArea txtObservacion;
+	private TableRowSorter trsFiltro;
+	String filtro;
+	
 	
 	int fila = -1;
 
@@ -71,27 +79,30 @@ public class PantallaRegistro {
 	
 	public PantallaRegistro() {
 		  initialize();
-		   txtId.setEnabled(false);
 		    
 		    txtNombre = new JTextField();
-		    txtNombre.setBounds(338, 116, 114, 19);
+		    txtNombre.setBackground(new Color(240, 240, 240));
+		    txtNombre.setFont(new Font("Arial", Font.PLAIN, 15));
+		    txtNombre.setBounds(337, 94, 114, 19);
 		    txtNombre.setColumns(10);
 		    frmAlumnos.getContentPane().add(txtNombre);	 
 		    
 		    JLabel lblObservacion = new JLabel("Observacion:");
-		    lblObservacion.setBounds(10, 286, 147, 90);
+		    lblObservacion.setBounds(20, 256, 147, 90);
 		    lblObservacion.setHorizontalAlignment(SwingConstants.RIGHT);
 		    lblObservacion.setFont(new Font("Arial", Font.PLAIN, 17));
 		    frmAlumnos.getContentPane().add(lblObservacion);
 		    
 		    JLabel lblFechaIngr = new JLabel("*Fecha de Ingreso:");
-		    lblFechaIngr.setBounds(181, 201, 147, 19);
+		    lblFechaIngr.setBounds(180, 179, 147, 19);
 		    lblFechaIngr.setHorizontalAlignment(SwingConstants.RIGHT);
 		    lblFechaIngr.setFont(new Font("Arial", Font.PLAIN, 17));
 		    frmAlumnos.getContentPane().add(lblFechaIngr);
 		    
 		    txtFechaIngr = new JTextField();
-		    txtFechaIngr.setBounds(338, 202, 114, 19);
+		    txtFechaIngr.setBackground(new Color(240, 240, 240));
+		    txtFechaIngr.setFont(new Font("Arial", Font.PLAIN, 15));
+		    txtFechaIngr.setBounds(337, 180, 114, 19);
 		    txtFechaIngr.addFocusListener(new FocusAdapter() {
 		    	@Override
 		    	public void focusLost(FocusEvent e) {
@@ -106,16 +117,17 @@ public class PantallaRegistro {
 		    frmAlumnos.getContentPane().add(txtFechaIngr);
 		    
 		    JLabel lblRegistrodeALumnos = new JLabel("Registro de alumnos");
-		    lblRegistrodeALumnos.setBounds(0, 11, 794, 53);
+		    lblRegistrodeALumnos.setBounds(0, 11, 777, 53);
 		    lblRegistrodeALumnos.setHorizontalAlignment(SwingConstants.CENTER);
 		    lblRegistrodeALumnos.setFont(new Font("Arial", Font.PLAIN, 24));
 		    frmAlumnos.getContentPane().add(lblRegistrodeALumnos);
 		    
 		    JScrollPane scrollPane = new JScrollPane();
-		    scrollPane.setBounds(167, 286, 479, 90);
+		    scrollPane.setBounds(177, 256, 479, 90);
 		    frmAlumnos.getContentPane().add(scrollPane);
 		    
 		    txtObservacion = new JTextArea();
+		    txtObservacion.setBackground(new Color(240, 240, 240));
 		    scrollPane.setViewportView(txtObservacion);
 		    txtObservacion.setLineWrap(true);
 		    txtObservacion.setFont(new Font("Arial", Font.PLAIN, 17));
@@ -156,8 +168,10 @@ public class PantallaRegistro {
 
 	private void initialize() {
 		frmAlumnos = new JFrame();
+		frmAlumnos.setResizable(false);
+		frmAlumnos.getContentPane().setBackground(new Color(192, 192, 192));
 		frmAlumnos.setTitle("ALUMNOS");
-		frmAlumnos.setBounds(100, 100, 791, 680);
+		frmAlumnos.setBounds(100, 100, 791, 650);
 		frmAlumnos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
@@ -210,9 +224,9 @@ public class PantallaRegistro {
 		frmAlumnos.getContentPane().add(btnEliminar);
 		
 		JButton btnLimpiar = new JButton("");
+		btnLimpiar.setIcon(new ImageIcon(PantallaRegistro.class.getResource("/Imagenes/Icono Limpiar.png")));
 		btnLimpiar.setBounds(476, 190, 117, 50);
 		btnLimpiar.setMargin(new Insets(0, 0, 0, 0));
-		btnLimpiar.setIcon(new ImageIcon("C:\\Users\\Gasparcitoh\\Desktop\\Nueva carpeta\\Icono de limpieza.png"));
 		
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -223,7 +237,9 @@ public class PantallaRegistro {
 		
 		
 		txtFechaNac = new JTextField();
-		txtFechaNac.setBounds(338, 244, 114, 19);
+		txtFechaNac.setBackground(new Color(240, 240, 240));
+		txtFechaNac.setFont(new Font("Arial", Font.PLAIN, 15));
+		txtFechaNac.setBounds(337, 222, 114, 19);
 		txtFechaNac.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -238,35 +254,33 @@ public class PantallaRegistro {
 		txtFechaNac.setColumns(10);
 		
 		JLabel lblNombre = new JLabel("*Nombre:");
-		lblNombre.setBounds(181, 117, 147, 15);
+		lblNombre.setBounds(180, 95, 147, 15);
 		lblNombre.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNombre.setFont(new Font("Arial", Font.PLAIN, 17));
 		frmAlumnos.getContentPane().add(lblNombre);
 		
 		txtId = new JTextField();
-		txtId.setBounds(338, 76, 114, 19);
+		txtId.setVisible(false);
+		txtId.setEnabled(false);
+		txtId.setBounds(787, 10, 114, 19);
 		txtId.setColumns(10);
 		frmAlumnos.getContentPane().add(txtId);
 		
-		JLabel lblId = new JLabel("Id:");
-		lblId.setBounds(181, 75, 147, 19);
-		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblId.setFont(new Font("Arial", Font.PLAIN, 17));
-		frmAlumnos.getContentPane().add(lblId);
-		
 		txtApellido = new JTextField();
-		txtApellido.setBounds(338, 158, 114, 19);
+		txtApellido.setBackground(new Color(240, 240, 240));
+		txtApellido.setFont(new Font("Arial", Font.PLAIN, 15));
+		txtApellido.setBounds(337, 136, 114, 19);
 		txtApellido.setColumns(10);
 		frmAlumnos.getContentPane().add(txtApellido);
 		
 		JLabel lblApellido = new JLabel("*Apellido:");
-		lblApellido.setBounds(181, 159, 147, 15);
+		lblApellido.setBounds(180, 137, 147, 15);
 		lblApellido.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblApellido.setFont(new Font("Arial", Font.PLAIN, 17));
 		frmAlumnos.getContentPane().add(lblApellido);
 		
 		JLabel lblFecha = new JLabel("*Fecha Nacimiento:");
-		lblFecha.setBounds(181, 243, 147, 19);
+		lblFecha.setBounds(180, 221, 147, 19);
 		lblFecha.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFecha.setFont(new Font("Arial", Font.PLAIN, 17));
 		frmAlumnos.getContentPane().add(lblFecha);
@@ -280,6 +294,7 @@ public class PantallaRegistro {
 	    modeloTabla.addColumn("Fecha de Ingreso");
 	    
 	    JTable tabla = new JTable(modeloTabla);
+	    tabla.setBackground(new Color(240, 240, 240));
 	    tabla.setFont(new Font("Arial", Font.PLAIN, 15));
 	    tabla.addMouseListener(new MouseAdapter() {
 	    	@Override
@@ -300,7 +315,7 @@ public class PantallaRegistro {
 	    tblListaAlumnos = new JTable();
 
 	    JScrollPane scrollPane = new JScrollPane(tabla);
-	    scrollPane.setBounds(20, 387, 735, 229);
+	    scrollPane.setBounds(20, 367, 735, 229);
 	    frmAlumnos.getContentPane().add(scrollPane);
 	    //...
 	    
