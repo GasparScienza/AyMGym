@@ -53,7 +53,7 @@ public class PantallaRegistro {
 	private TableRowSorter trsFiltro;
 	String filtro;
 	
-	
+	//sAS;
 	int fila = -1;
 
 	

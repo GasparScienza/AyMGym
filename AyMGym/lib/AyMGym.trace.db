@@ -218,3 +218,9 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Gasparc
 	at org.h2.mvstore.FileStore.open(FileStore.java:128)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:452)
 	... 30 more
+2023-06-26 11:58:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ALUMNOS" not found (this database is empty); SQL statement:
+SELECT*FROM alumnos; [42104-214]
+2023-07-10 21:21:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ALUMNOS" not found (this database is empty); SQL statement:
+SELECT*FROM alumnos; [42104-214]
