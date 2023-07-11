@@ -52,8 +52,7 @@ public class PantallaRegistro {
 	private JTextArea txtObservacion;
 	private TableRowSorter trsFiltro;
 	String filtro;
-	
-	//sAS;
+		
 	int fila = -1;
 
 	
