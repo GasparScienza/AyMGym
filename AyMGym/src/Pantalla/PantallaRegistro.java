@@ -23,22 +23,11 @@ import java.awt.event.FocusEvent;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
-import java.awt.Dimension;
 import java.awt.Insets;
 import javax.swing.JTextArea;
-import javax.swing.JScrollBar;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-import javax.swing.DropMode;
-import javax.swing.UIManager;
 import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.SystemColor;
-import javax.swing.border.CompoundBorder;
-import javax.swing.table.TableRowSorter;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.RowFilter;
+import com.toedter.calendar.JDateChooser;
+import java.util.Calendar;
 
 
 public class PantallaRegistro {
@@ -50,7 +39,6 @@ public class PantallaRegistro {
 	private JTable tblListaAlumnos;
 	private JTextField txtNombre;
 	private JTextArea txtObservacion;
-	private TableRowSorter trsFiltro;
 	String filtro;
 		
 	int fila = -1;
@@ -131,6 +119,21 @@ public class PantallaRegistro {
 		    txtObservacion.setLineWrap(true);
 		    txtObservacion.setFont(new Font("Arial", Font.PLAIN, 17));
 		    
+		    JDateChooser dateChooser = new JDateChooser();
+		    dateChooser.setDateFormatString("yyyy-MM-dd");
+		    dateChooser.getCalendarButton().addActionListener(new ActionListener() {
+		    	public void actionPerformed(ActionEvent e) {
+		    		// Obtener la fecha actual
+		            Calendar calendar = Calendar.getInstance();
+		            java.util.Date currentDate = calendar.getTime();
+
+		            // Establecer la fecha actual como valor predeterminado
+		            dateChooser.setDate(currentDate);
+		    	}
+		    });
+		    dateChooser.setBounds(38, 178, 131, 20);
+		    frmAlumnos.getContentPane().add(dateChooser);
+		    
 	}
 	 
 
@@ -180,7 +183,7 @@ public class PantallaRegistro {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if(txtNombre.getText().equals("")||txtApellido.getText().equals("")||txtFechaNac.getText().equals("")||txtFechaIngr.getText().equals("")) {
+					if(txtNombre.getText().equals("")||txtApellido.getText().equals("")) {//||txtFechaNac.getText().equals("")||txtFechaIngr.getText().equals("")) {
 						JOptionPane.showMessageDialog(null, "Campos vacios");
 						return;
 					}
